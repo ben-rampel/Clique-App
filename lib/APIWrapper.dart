@@ -55,13 +55,23 @@ class Message {
 
 class Group {
   final int id;
+  final String name;
+  final String description;
   final List<User> members;
   final List<User> wannabeMembers;
   final int memberTurnover;
   final Location location;
   final List<Message> messages;
 
-  Group({this.id, this.members, this.wannabeMembers, this.memberTurnover, this.location, this.messages});
+  Group({
+    this.id,
+    this.name,
+    this.description,
+    this.members,
+    this.wannabeMembers,
+    this.memberTurnover,
+    this.location,
+    this.messages});
 
   factory Group.fromJson(Map<String, dynamic> json) {
     return Group(

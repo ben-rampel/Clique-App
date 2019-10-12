@@ -54,61 +54,66 @@ class _CliqueMainMenuState extends State<CliqueMainMenu> {
                           child: Text("It doesn't look like there's any groups in your area! Try starting one!"));
                     } else {
                       return ListView.builder(
-                        shrinkWrap: true,
+                          shrinkWrap: true,
                           itemCount: snapshot.data.length,
                           itemBuilder: (BuildContext context, int index) {
                             return Card(child: ListTile(onTap: () {}, title: Text(snapshot.data[index].name)));
                           });
                     }
                   }),
-
-
-
               RaisedButton(
                 child: Text("Add new group!"),
                 onPressed: () {
-                  showDialog(context: context, builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text("Create A Group"),
-                      content: Form(
-                        child: Column(
-                          children: <Widget>[
-                            TextFormField(
-                              decoration: InputDecoration(
-                                hintText: "Group Name"
-                              ),
-                              textAlign: TextAlign.center,
-                              validator: (String newValue) {
-                                newGroupName = newValue;
-                                return null;
-                              },
-                            ),
-                            TextFormField(
-                              decoration: InputDecoration(
-                                  hintText: "Give a brief description of your group!"
-                              ),
-                              textAlign: TextAlign.center,
-                              validator: (String newValue) {
-                                newGroupDescription = newValue;
-                                return null;
-                              },
-                            ),
-                            RaisedButton(
-                              child: Text("Create"),
-                              onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("Create A Group"),
+                          content: Form(
+                            child: Column(
+                              children: <Widget>[
+                                TextFormField(
+                                  decoration: InputDecoration(hintText: "Group Name"),
+                                  textAlign: TextAlign.center,
+                                  validator: (String newValue) {
+                                    newGroupName = newValue;
+                                    return null;
+                                  },
+                                ),
+                                TextFormField(
+                                  decoration: InputDecoration(hintText: "Give a brief description of your group!"),
+                                  textAlign: TextAlign.center,
+                                  validator: (String newValue) {
+                                    newGroupDescription = newValue;
+                                    return null;
+                                  },
+                                ),
+                                RaisedButton(
+                                  child: Text("Create"),
+                                  onPressed: () {
 //                                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => new CliqueMainMenu()), (_) => false);
-                              setState(() {
 
-                              });
-                              Navigator.pop(context);
-
-                              },
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-                  });
+                                    Group newGroup = new Group(
+                                      id: 0,
+                                      members: [],
+                                      wannabeMembers: [],
+                                      location: Location(
+                                          latitude: currentPosition.latitude, longitude: currentPosition.longitude),
+                                      messages: [],
+                                      memberTurnover: 0,
+                                      name: newGroupName,
+                                      description: newGroupDescription,
+                                    );
+                                    attemptCreateGroup(newGroup);
+                                    setState(() {});
+                                    Navigator.pop(context);
+                                  },
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      });
                 },
               )
             ],
