@@ -136,7 +136,10 @@ Future<List<Group>> getGroups(double latitude, double longitude) async {
 // Takes in a group and attempts to make a POST request to url, with the body being group.toJson()
 // Returns null if successful, returns the request's error if unsuccessful
 Future<String> attemptCreateGroup(Group group) async {
-  final response = await http.post(url, body: group.toJson());
+  String apiToken = await storage.read(key: "APIToken");
+  dynamic headers = {"Authorization": "Bearer " + apiToken};
+
+  final response = await http.post(url, headers: headers, body: group.toJson());
   int statusCode = response.statusCode;
 
   return (statusCode == 200) ? null : json.decode(response.body)['error'];
