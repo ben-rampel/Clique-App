@@ -48,6 +48,13 @@ class Location {
     "latitude": latitude,
     "longitude": longitude,
   };
+
+  factory Location.fromJson(Map<String, dynamic> json) {
+    return Location(
+      latitude: json["latitude"],
+      longitude: json["longitude"],
+    );
+  }
 }
 
 class Message {
@@ -62,11 +69,11 @@ class Group {
   final int id;
   final String name;
   final String description;
-  final List<User> members;
-  final List<User> wannabeMembers;
+  final List<dynamic> members;
+  final List<dynamic> wannabeMembers;
   final int memberTurnover;
   final Location location;
-  final List<Message> messages;
+  final List<dynamic> messages;
 
   Group({
     this.id,
@@ -81,21 +88,25 @@ class Group {
   factory Group.fromJson(Map<String, dynamic> json) {
     return Group(
       id: json['id'],
+      name: json["name"],
+      description: json["description"],
       members: json['members'],
       wannabeMembers: json['wannabeMembers'],
       memberTurnover: json['memberTurnover'],
-      location: json['location'],
-      messages: json['messages'],
+      location: Location.fromJson(json['location']),
+      messages: json['groupMessages'],
     );
   }
 
   Map<String, dynamic> toJson() => {
-    'id': this.id,
-    'members': this.members,
-    'wannabeMembers': this.wannabeMembers,
-    'memberTurnover': this.memberTurnover,
+//    'id': this.id,
+//    'members': this.members,
+//    'wannabeMembers': this.wannabeMembers,
+//    'memberTurnover': this.memberTurnover,
+    'name': this.name,
+    'description': this.description,
     'location': this.location.toJson(),
-    'messages': this.messages,
+//    'messages': this.messages,
   };
 }
 
@@ -147,13 +158,14 @@ Future<List<Group>> getGroups(double latitude, double longitude) async {
   int statusCode = response.statusCode;
 
   if (statusCode == 200) {
+    print(json.decode(response.body));
     List<dynamic> decoded = json.decode(response.body)['groups'];
-    List<Group> groups;
+    List<Group> groups = [];
 
     for (int i = 0; i < decoded.length; i++) {
-      groups[i] = Group.fromJson(decoded[i]);
+      groups.add(Group.fromJson(decoded[i]));
     }
-
+    print(groups);
     return groups;
   } else {
     return json.decode(response.body)['error'];
@@ -170,4 +182,12 @@ Future<String> attemptCreateGroup(Group group) async {
   int statusCode = response.statusCode;
 
   return (statusCode == 200) ? null : json.decode(response.body)['error'];
+}
+
+Future<List<String>> getMessages(groupID) async {
+  String apiToken = await storage.read(key: "APIToken");
+  dynamic headers = {"Authorization": "Bearer " + apiToken, "Content-Type": "application/json"};
+
+  final response = await http.get(url + "/chat/" + groupID + "/messages", headers: headers);
+  return json.decode(response.body);
 }
