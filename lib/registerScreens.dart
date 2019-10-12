@@ -159,10 +159,13 @@ class UserInformationScreen extends StatefulWidget {
   }
 }
 
-
 class _UserInformationScreenState extends State<UserInformationScreen> {
-  List<String> interests;
+  List<String> interests = [];
+  String tempInterest;
   String bio;
+
+  final TextEditingController _controller = new TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -173,6 +176,7 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
         body: Column(
           children: <Widget>[
             Form(
+              key: _formKey,
               child: Column(
                 children: <Widget>[
                   Padding(
@@ -187,24 +191,69 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
                       textAlign: TextAlign.left,
                     ),
                   ),
-                  SizedBox(height: 10.0),
                   Padding(
-                    padding: new EdgeInsets.only(left: 5.0, right: 5.0),
-                    child: TextFormField(
+                    padding: new EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+                    child: TextField(
                       decoration: InputDecoration(
-                        hintText: "Interests (comma separated)",
-                        border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(16.0),
-                            borderSide: new BorderSide()),
-                        contentPadding: new EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
+                        hintText: "Interests (type an interest in and press add)",
+                        border: InputBorder.none,
                       ),
-                      validator: (String newValue) {
-                        interests = newValue.split(",");
-                        return null;
-                      },
+                      style: new TextStyle(
+                        fontSize: 15.0,
+                      ),
                       textAlign: TextAlign.left,
                     ),
                   ),
+                  Padding(
+                    padding: new EdgeInsets.only(left: 5.0, right: 5.0),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Padding(
+                            padding: new EdgeInsets.only(right: 5.0),
+                            child: TextFormField(
+                              controller: _controller,
+                              decoration: InputDecoration(
+                                hintText: "Interest",
+                                border: new OutlineInputBorder(
+                                    borderRadius: new BorderRadius.circular(16.0),
+                                    borderSide: new BorderSide()),
+                                contentPadding: new EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
+                              ),
+                              validator: (String newValue) {
+                                tempInterest = newValue;
+                                return null;
+                              },
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                        ),
+
+                        Container(
+                          child: SizedBox(
+                              width: 60.0,
+                              child: RaisedButton(
+                                child: Text("Add"),
+                                onPressed: () {
+                                  _formKey.currentState.validate();
+                                  if(tempInterest != null) {
+                                    if (interests == null) {
+                                      interests = [tempInterest];
+                                    } else {
+                                      interests.add(tempInterest);
+                                    }
+                                    _controller.text = '';
+                                  }
+                                },
+                              )
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+
+
                   SizedBox(height: 10.0),
                   Padding(
                     padding: new EdgeInsets.only(left: 5.0, right: 5.0),
@@ -219,7 +268,6 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
                         contentPadding: new EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
                       ),
                       validator: (String newValue) {
-                        interests = newValue.split(",");
                         return null;
                       },
                       textAlign: TextAlign.left,
@@ -258,5 +306,3 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
     );
   }
 }
-
-
