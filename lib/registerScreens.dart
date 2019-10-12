@@ -28,57 +28,116 @@ class _CliqueRegisterScreenState extends State<CliqueRegisterScreen> {
             Form(
               child: Column(
                 children: <Widget>[
-                  TextFormField(
-                    decoration: InputDecoration(hintText: "Username"),
-                    textAlign: TextAlign.center,
-                    validator: (String input) {
-                      username = input;
-                      return null;
-                    },
+                  Padding(
+                    padding: new EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: "Register",
+                      ),
+                      style: new TextStyle(
+                        fontSize: 30.0,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
                   ),
-                  TextFormField(
-                    decoration: InputDecoration(hintText: "Password"),
-                    obscureText: true,
-                    textAlign: TextAlign.center,
-                    validator: (String input) {
-                      password = input;
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(hintText: "Phone Number"),
-                    obscureText: true,
-                    textAlign: TextAlign.center,
-                    validator: (String input) {
-                      phone = input;
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(hintText: "Email"),
-                    textAlign: TextAlign.center,
-                    validator: (String input) {
-                      email = input;
-                      return null;
-                    },
-                  ),
-                  RaisedButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => UserInformationScreen(
-                                      username: username,
-                                      password: password,
-                                      email: email,
-                                    )));
+                  SizedBox(height: 10.0),
+                  Padding(
+                    padding: new EdgeInsets.only(left: 5.0, right: 5.0),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        hintText: "Username",
+                        border: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(16.0),
+                            borderSide: new BorderSide()),
+                        contentPadding: new EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
+                      ),
+                      textAlign: TextAlign.left,
+                      autocorrect: false,
+                      validator: (String input) {
+                        username = input;
+                        return null;
                       },
-                      child: Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[Text("Next"), Icon(Icons.arrow_right)],
-                        ),
-                      ))
+                    ),
+                  ),
+                  SizedBox(height: 10.0),
+                  Padding(
+                    padding: new EdgeInsets.only(left: 5.0, right: 5.0),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        hintText: "Password",
+                        border: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(16.0),
+                            borderSide: new BorderSide()),
+                        contentPadding: new EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
+                      ),
+                      obscureText: true,
+                      textAlign: TextAlign.left,
+                      autocorrect: false,
+                      validator: (String input) {
+                        password = input;
+                        return null;
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 10.0),
+                  Padding(
+                    padding: new EdgeInsets.only(left: 5.0, right: 5.0),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        hintText: "Phone Number",
+                        border: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(16.0),
+                            borderSide: new BorderSide()),
+                        contentPadding: new EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
+                      ),
+                      textAlign: TextAlign.left,
+                      autocorrect: false,
+                      validator: (String input) {
+                        phone = input;
+                        return null;
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 10.0),
+                  Padding(
+                    padding: new EdgeInsets.only(left: 5.0, right: 5.0),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        hintText: "Email",
+                        border: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(16.0),
+                            borderSide: new BorderSide()),
+                        contentPadding: new EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
+                      ),
+                      textAlign: TextAlign.left,
+                      autocorrect: false,
+                      validator: (String input) {
+                        email = input;
+                        return null;
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 10.0),
+                  SizedBox(
+                    width: 90.0,
+                    child: RaisedButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => UserInformationScreen(
+                                        username: username,
+                                        password: password,
+                                        email: email,
+                                      )));
+                        },
+                        child: Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[Text("Next"), Icon(Icons.arrow_right)],
+                          ),
+                        ))
+                  ),
                 ],
               ),
             )
@@ -116,49 +175,81 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
             Form(
               child: Column(
                 children: <Widget>[
-                  TextFormField(
-                    decoration: InputDecoration(
-                      hintText: "Interests (comma seperated)",
+                  Padding(
+                    padding: new EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: "Register",
+                      ),
+                      style: new TextStyle(
+                        fontSize: 30.0,
+                      ),
+                      textAlign: TextAlign.left,
                     ),
-                    validator: (String newValue) {
-                      interests = newValue.split(",");
-                      return null;
-                    },
-                    textAlign: TextAlign.center,
                   ),
-                  TextFormField(
-                    maxLines: 2,
-                    keyboardType: TextInputType.multiline,
-                    decoration: InputDecoration(
-                      hintText: "Bio (let people know who you are!)",
+                  SizedBox(height: 10.0),
+                  Padding(
+                    padding: new EdgeInsets.only(left: 5.0, right: 5.0),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        hintText: "Interests (comma separated)",
+                        border: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(16.0),
+                            borderSide: new BorderSide()),
+                        contentPadding: new EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
+                      ),
+                      validator: (String newValue) {
+                        interests = newValue.split(",");
+                        return null;
+                      },
+                      textAlign: TextAlign.left,
                     ),
-                    validator: (String newValue) {
-                      interests = newValue.split(",");
-                      return null;
-                    },
-                    textAlign: TextAlign.center,
                   ),
-                  RaisedButton(
-                    child: Text("Finish!"),
-                    onPressed: () async {
-                      User currentUserData = User(
-                        username: widget.username,
-                        password: widget.password,
-                        firstName: "",
-                        lastName: "",
-                        bio: bio,
-                        interests: interests,
-                      );
-                      List<String> responseData = await attemptAddUser(currentUserData);
-                      if (responseData[0] == null) {
-                        print(responseData[1]);
-                      }
-                      else {
-                        storage.write(key: "APIToken", value: responseData[0]);
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CliqueMainMenu()));
-                      }
-                    },
-                  )
+                  SizedBox(height: 10.0),
+                  Padding(
+                    padding: new EdgeInsets.only(left: 5.0, right: 5.0),
+                    child: TextFormField(
+                      maxLines: 2,
+                      keyboardType: TextInputType.multiline,
+                      decoration: InputDecoration(
+                        hintText: "Bio (let people know who you are!)",
+                        border: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(16.0),
+                            borderSide: new BorderSide()),
+                        contentPadding: new EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
+                      ),
+                      validator: (String newValue) {
+                        interests = newValue.split(",");
+                        return null;
+                      },
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                  SizedBox(height: 10.0),
+                  SizedBox(
+                    width: 80.0,
+                    child: RaisedButton(
+                      child: Text("Finish!"),
+                      onPressed: () async {
+                        User currentUserData = User(
+                          username: widget.username,
+                          password: widget.password,
+                          firstName: "",
+                          lastName: "",
+                          bio: bio,
+                          interests: interests,
+                        );
+                        List<String> responseData = await attemptAddUser(currentUserData);
+                        if (responseData[0] == null) {
+                          print(responseData[1]);
+                        }
+                        else {
+                          storage.write(key: "APIToken", value: responseData[0]);
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CliqueMainMenu()));
+                        }
+                      },
+                    )
+                  ),
                 ],
               ),
             )
