@@ -95,10 +95,10 @@ Future<List<String>> attemptAddUser(User user) async {
   return (statusCode == 200) ? [json.decode(response.body)['APIToken'], null] : [null, json.decode(response.body)['error']];
 }
 
-// Attempts to make a GET request to url
+// Attempts to make a GET request to url/username
 // Returns a new user from the json received if successful, returns the request's error if unsuccessful
-Future<dynamic> attemptGetUser() async {
-  final response = await http.get(url);
+Future<dynamic> attemptGetUser(String username) async {
+  final response = await http.post(url + '/' + username);
   int statusCode = response.statusCode;
 
   return (statusCode == 200) ? User.fromJson(json.decode(response.body)) : json.decode(response.body)['error'];
