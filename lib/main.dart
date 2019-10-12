@@ -1,6 +1,12 @@
+import 'package:clique/mainMenu.dart';
+import 'package:clique/registerScreens.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 void main() => runApp(Clique());
+
+final storage = FlutterSecureStorage();
+
 
 class Clique extends StatelessWidget {
   // This widget is the root of your application.
@@ -11,7 +17,7 @@ class Clique extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: CliqueHomePage(title: 'Flutter Demo Home Page'),
+      home: CliqueRegisterScreen(),
     );
   }
 }
