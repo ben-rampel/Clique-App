@@ -17,6 +17,7 @@ class _CliqueRegisterScreenState extends State<CliqueRegisterScreen> {
   String password;
   String email;
   String phone;
+  final _formKey = GlobalKey<FormState>();
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,6 +27,7 @@ class _CliqueRegisterScreenState extends State<CliqueRegisterScreen> {
         body: Column(
           children: <Widget>[
             Form(
+              key: _formKey,
               child: Column(
                 children: <Widget>[
                   Padding(
@@ -122,6 +124,7 @@ class _CliqueRegisterScreenState extends State<CliqueRegisterScreen> {
                     width: 90.0,
                     child: RaisedButton(
                         onPressed: () {
+                          _formKey.currentState.validate();
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
@@ -163,6 +166,7 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
   List<String> interests = [];
   String tempInterest;
   String bio;
+  final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _controller = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -279,6 +283,7 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
                     child: RaisedButton(
                       child: Text("Finish!"),
                       onPressed: () async {
+                        _formKey.currentState.validate();
                         User currentUserData = User(
                           username: widget.username,
                           password: widget.password,
