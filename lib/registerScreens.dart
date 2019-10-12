@@ -17,6 +17,7 @@ class _CliqueRegisterScreenState extends State<CliqueRegisterScreen> {
   String password;
   String email;
   String phone;
+  final _formKey = GlobalKey<FormState>();
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,6 +27,7 @@ class _CliqueRegisterScreenState extends State<CliqueRegisterScreen> {
         body: Column(
           children: <Widget>[
             Form(
+              key: _formKey,
               child: Column(
                 children: <Widget>[
                   TextFormField(
@@ -64,6 +66,7 @@ class _CliqueRegisterScreenState extends State<CliqueRegisterScreen> {
                   ),
                   RaisedButton(
                       onPressed: () {
+                        _formKey.currentState.validate();
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
@@ -104,6 +107,7 @@ class UserInformationScreen extends StatefulWidget {
 class _UserInformationScreenState extends State<UserInformationScreen> {
   List<String> interests;
   String bio;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -114,6 +118,7 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
         body: Column(
           children: <Widget>[
             Form(
+              key: _formKey,
               child: Column(
                 children: <Widget>[
                   TextFormField(
@@ -141,6 +146,7 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
                   RaisedButton(
                     child: Text("Finish!"),
                     onPressed: () async {
+                      _formKey.currentState.validate();
                       User currentUserData = User(
                         username: widget.username,
                         password: widget.password,
