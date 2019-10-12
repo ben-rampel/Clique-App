@@ -84,7 +84,7 @@ class Group {
   };
 }
 
-// Given a User user, attempts to make a POST request to url, where the body user.toJson()
+// Given a User user, attempts to make a POST request to url, where the body is user.toJson()
 // Returns a list of strings with two indices
 // If attempt was successful, returns the api token in the first index and null in the second
 // If attempt was unsuccessful, returns null in the first index and the request's error in the second
