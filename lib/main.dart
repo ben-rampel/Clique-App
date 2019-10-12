@@ -17,7 +17,7 @@ class Clique extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: CliqueRegisterScreen(),
+      home: CliqueHomePage(),
     );
   }
 }
