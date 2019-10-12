@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'main.dart';
@@ -56,20 +55,19 @@ class Message {
 
 class Group {
   final int id;
-  final Map<int, User> members;
-  final Set<int> pendingMembers;
+  final List<User> members;
+  final List<User> wannabeMembers;
   final int memberTurnover;
   final Location location;
   final List<Message> messages;
 
-  Group({this.id, this.members, this.pendingMembers, this.memberTurnover, this.location, this.messages});
+  Group({this.id, this.members, this.wannabeMembers, this.memberTurnover, this.location, this.messages});
 
-  // this dont work i think
   factory Group.fromJson(Map<String, dynamic> json) {
     return Group(
       id: json['id'],
       members: json['members'],
-      pendingMembers: json['pendingMembers'],
+      wannabeMembers: json['wannabeMembers'],
       memberTurnover: json['memberTurnover'],
       location: json['location'],
       messages: json['messages'],
@@ -79,49 +77,37 @@ class Group {
   Map<String, dynamic> toJson() => {
     'id': this.id,
     'members': this.members,
-    'pendingMembers': this.pendingMembers,
+    'wannabeMembers': this.wannabeMembers,
     'memberTurnover': this.memberTurnover,
     'location': this.location,
     'messages': this.messages,
   };
 }
 
-Future<List<String>> attemptAddUser(user) async {
-  // make POST request
+// Given a User user, attempts to make a POST request to url, where the body user.toJson()
+// Returns a list of strings with two indices
+// If attempt was successful, returns the api token in the first index and null in the second
+// If attempt was unsuccessful, returns null in the first index and the request's error in the second
+Future<List<String>> attemptAddUser(User user) async {
   final response = await http.post(url, body: user.toJson());
-
-  // check the status code of the response for the result
   int statusCode = response.statusCode;
 
-  // return a list with two indices
-  // if request was successful make the first index the api token and the second null
-  // if request was unsuccessful make the first index null and the second index the error
-  if (statusCode == 200) {
-    return [json.decode(response.body)['APIToken'], null];
-  } else {
-    return [null, json.decode(response.body)['error']];
-  }
+  return (statusCode == 200) ? [json.decode(response.body)['APIToken'], null] : [null, json.decode(response.body)['error']];
 }
 
+// Attempts to make a GET request to url
+// Returns a new user from the json received if successful, returns the request's error if unsuccessful
 Future<dynamic> attemptGetUser() async {
-  // make GET request
   final response = await http.get(url);
-
-  // check the status code of the response for the result
   int statusCode = response.statusCode;
 
-  // if request was successful return a new user object from the request's data
-  // if request was unsuccessful return the error (which will be encoded in the request)
-  if (statusCode == 200) {
-    return User.fromJson(json.decode(response.body));
-  } else {
-    return json.decode(response.body)['error'];
-  }
+  return (statusCode == 200) ? User.fromJson(json.decode(response.body)) : json.decode(response.body)['error'];
 }
 
-// this function returns all the groups near the given latitude and longitude
-// takes in two doubles
-Future<List<Group>> getGroups(latitude, longitude) async {
+// Takes in a latitude and longitude and attempts to make a POST request to url
+// Sends the API token as the header and the latitude and longtiude as the body
+// Returns a list of groups retrieved if successful, returns the request's error if unsuccessful
+Future<List<Group>> getGroups(double latitude, double longitude) async {
   String apiToken = await storage.read(key: "APIToken");
   dynamic headers = {"Authorization": "Bearer " + apiToken};
 
@@ -130,44 +116,28 @@ Future<List<Group>> getGroups(latitude, longitude) async {
     'longitude': longitude,
   };
 
-  // make POST request
   final response = await http.post(url, headers: headers, body: body());
-
-  // check the status code of the response for the result
   int statusCode = response.statusCode;
 
-  // if request was successful return a list of groups
-  // if request was unsuccessful return the error (which will be encoded in the request)
   if (statusCode == 200) {
-    // i don't think that this will work i not sure tho
-    return json.decode(response.body)['groups'];
+    List<dynamic> decoded = json.decode(response.body)['groups'];
+    List<Group> groups;
+
+    for (int i = 0; i < decoded.length; i++) {
+      groups[i] = Group.fromJson(decoded[i]);
+    }
+
+    return groups;
   } else {
     return json.decode(response.body)['error'];
   }
 }
 
-Future<String> attemptCreateGroup(group) async {
-  // make POST request
+// Takes in a group and attempts to make a POST request to url, with the body being group.toJson()
+// Returns null if successful, returns the request's error if unsuccessful
+Future<String> attemptCreateGroup(Group group) async {
   final response = await http.post(url, body: group.toJson());
-
-  // check the status code of the response for the result
   int statusCode = response.statusCode;
 
-  // return a list with two indices
-  // if request was successful return null
-  // if request was unsuccessful return the error (which will be encoded in the request)
-  if (statusCode == 200) {
-    return null;
-  } else {
-    return json.decode(response.body)['error'];
-  }
+  return (statusCode == 200) ? null : json.decode(response.body)['error'];
 }
-
-User testUser = new User(
-  username: 'brytonsf',
-  firstName: 'bryton',
-  lastName: 'shoffner',
-  password: 'password69',
-  interests: ['swag', 'money'],
-  bio: 'im a 22 year old man',
-);
