@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 import 'main.dart';
 
-String url = 'google.com';
+String url = '40.114.122.110';
 
 class User {
   final String username;
@@ -118,6 +118,15 @@ Future<dynamic> attemptGetUser(String username) async {
 // Sends the API token as the header and the latitude and longtiude as the body
 // Returns a list of groups retrieved if successful, returns the request's error if unsuccessful
 Future<List<Group>> getGroups(double latitude, double longitude) async {
+//  return [Group(
+//    id: 0,
+//    name: "name",
+//    description: "test",
+//    location: Location(latitude: 0, longitude: 0),
+//    memberTurnover: 9,
+//    members: [],
+//    wannabeMembers: []
+//  )];
   String apiToken = await storage.read(key: "APIToken");
   dynamic headers = {"Authorization": "Bearer " + apiToken};
 

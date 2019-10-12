@@ -57,7 +57,61 @@ class _CliqueMainMenuState extends State<CliqueMainMenu> {
                           shrinkWrap: true,
                           itemCount: snapshot.data.length,
                           itemBuilder: (BuildContext context, int index) {
-                            return Card(child: ListTile(onTap: () {}, title: Text(snapshot.data[index].name)));
+                            return Card(child: ListTile(
+                                onTap: () {
+                                  showDialog(context: context, builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Text("Group Name: "),
+                                              Text(snapshot.data[index].name)
+                                            ],
+                                          ),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Text("Group Description: "),
+                                              Text(snapshot.data[index].description)
+                                            ],
+                                          ),
+//                                          Row(
+//                                            mainAxisAlignment: MainAxisAlignment.center,
+//                                            children: <Widget>[
+//                                              Text("Main Interests: "),
+//                                              Text(snapshot.data[index].mainInterests)
+//                                            ],
+//                                          )
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: <Widget>[
+                                              RaisedButton(
+                                                child: Text("Close"),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                              RaisedButton(
+                                                child: Text("Join Group"),
+                                                onPressed: () {
+                                                  //TODO
+                                                },
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  });
+                                },
+                                title: Text(snapshot.data[index].name
+                                )
+                            )
+                            );
                           });
                     }
                   }),
@@ -71,6 +125,7 @@ class _CliqueMainMenuState extends State<CliqueMainMenu> {
                           title: Text("Create A Group"),
                           content: Form(
                             child: Column(
+                              mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
                                 TextFormField(
                                   decoration: InputDecoration(hintText: "Group Name"),
