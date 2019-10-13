@@ -30,16 +30,18 @@ class _CliqueRegisterScreenState extends State<CliqueRegisterScreen> {
               key: _formKey,
               child: Column(
                 children: <Widget>[
-                  Padding(
-                    padding: new EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: "Register",
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: new EdgeInsets.only(left: 5.0, right: 5.0, bottom: 0.0, top: 10.0),
+                      child: Text(
+                        "Register",
+                        style: new TextStyle(
+                          fontSize: 30.0,
+                          color: Colors.black87,
+                        ),
+                        textAlign: TextAlign.left,
                       ),
-                      style: new TextStyle(
-                        fontSize: 30.0,
-                      ),
-                      textAlign: TextAlign.left,
                     ),
                   ),
                   SizedBox(height: 10.0),
@@ -167,6 +169,7 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
   String tempInterest;
   String bio;
   final _formKey = GlobalKey<FormState>();
+
   final TextEditingController _controller = new TextEditingController();
 
   @override
@@ -174,6 +177,7 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text("Clique"),
+
         ),
         body: Column(
           children: <Widget>[
@@ -181,29 +185,30 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
               key: _formKey,
               child: Column(
                 children: <Widget>[
-                  Padding(
-                    padding: new EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: "Register",
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: new EdgeInsets.only(left: 5.0, right: 5.0, bottom: 0.0, top: 10.0),
+                      child: Text(
+                        "Register",
+                        style: new TextStyle(
+                          fontSize: 30.0,
+                        ),
+                        textAlign: TextAlign.left,
                       ),
-                      style: new TextStyle(
-                        fontSize: 30.0,
-                      ),
-                      textAlign: TextAlign.left,
                     ),
                   ),
-                  Padding(
-                    padding: new EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: "Interests (type an interest in and press add)",
-                        border: InputBorder.none,
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: new EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                      child: Text(
+                        "Interests (type an interest in and press add)",
+                        style: new TextStyle(
+                          fontSize: 15.0,
+                        ),
+                        textAlign: TextAlign.left,
                       ),
-                      style: new TextStyle(
-                        fontSize: 15.0,
-                      ),
-                      textAlign: TextAlign.left,
                     ),
                   ),
                   Padding(
