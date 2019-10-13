@@ -11,7 +11,8 @@
         android:label="clique"
         android:icon="@mipmap/ic_launcher">
 
-        <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyBpojw1Y5o4sihkq_Ba_Ccd2-CAfMSR-l8"/>
+<!--        <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyBZ8MFG-a121p8qrpnpd3lvK7VTU6RAJ9w"/>-->
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBZ8MFG-a121p8qrpnpd3lvK7VTU6RAJ9w"/>
         <!--<meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>-->
 
         <activity

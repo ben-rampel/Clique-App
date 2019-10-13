@@ -12,7 +12,7 @@ class User {
   final String firstName;
   final String lastName;
   final String password;
-  final List<String> interests;
+  final List<dynamic> interests;
   final String bio;
 
   User({this.username, this.firstName, this.lastName, this.password, this.interests, this.bio});
@@ -60,9 +60,16 @@ class Location {
 class Message {
   final User author;
   final String content;
-  final DateTime date;
+  final String date;
 
   Message({this.author, this.content, this.date});
+  factory Message.fromJson(Map<String, dynamic> json) {
+    return Message(
+        content: json["content"],
+        date: json["date"],
+        author: User.fromJson(json["author"])
+    );
+  }
 }
 
 class Group {
@@ -137,15 +144,6 @@ Future<dynamic> attemptGetUser(String username) async {
 // Sends the API token as the header and the latitude and longtiude as the body
 // Returns a list of groups retrieved if successful, returns the request's error if unsuccessful
 Future<List<Group>> getGroups(double latitude, double longitude) async {
-//  return [Group(
-//    id: 0,
-//    name: "name",
-//    description: "test",
-//    location: Location(latitude: 0, longitude: 0),
-//    memberTurnover: 9,
-//    members: [],
-//    wannabeMembers: []
-//  )];
   String apiToken = await storage.read(key: "APIToken");
   dynamic headers = {"Authorization": "Bearer " + apiToken};
 
@@ -184,10 +182,54 @@ Future<String> attemptCreateGroup(Group group) async {
   return (statusCode == 200) ? null : json.decode(response.body)['error'];
 }
 
-Future<List<String>> getMessages(groupID) async {
+Future<List<Message>> getMessages(groupID) async {
   String apiToken = await storage.read(key: "APIToken");
   dynamic headers = {"Authorization": "Bearer " + apiToken};
   final response = await http.get(url + "chat/" + groupID + "/messages", headers: headers);
-  print(json.decode(response.body));
-  return json.decode(response.body);
+  
+  dynamic results = json.decode(response.body); 
+  List<Message> returnList = []; 
+  for (int i = 0; i <results.length; i++) {
+    returnList.add(Message.fromJson(results[i])); 
+  }
+  return returnList;
+}
+
+
+Future<void> sendMessage(String groupID, String message) async {
+  String apiToken = await storage.read(key: "APIToken");
+  dynamic headers = {"Authorization": "Bearer " + apiToken};
+  final response = await http.post(url + "chat/" + groupID + "/sendMessage?message=" + message, headers: headers);
+  print(response.statusCode);
+}
+
+Future<void> requestJoin(Group groupToJoin) async {
+  String apiToken = await storage.read(key: "APIToken");
+  dynamic headers = {"Authorization": "Bearer " + apiToken};
+  final response = await http.post(url + "groups/" + groupToJoin.id.toString() + "/requests", headers: headers);
+  print(response.statusCode);
+}
+
+
+Future<Group> getCurrentGroup() async {
+  String apiToken = await storage.read(key: "APIToken");
+  dynamic headers = {"Authorization": "Bearer " + apiToken};
+  final response = await http.get(url + "me", headers: headers);
+  if (json.decode(response.body)["currentGroup"] == null) {
+    return null;
+  }
+  else {
+    final currentGroupMeta =  Group.fromJson(json.decode(response.body)["currentGroup"]);
+    final newResponse = await http.get(url + "groups/" + currentGroupMeta.id.toString(), headers: headers);
+    return Group.fromJson(json.decode(newResponse.body));
+  }
+}
+
+Future<void> leaveGroup(groupid) async {
+  String apiToken = await storage.read(key: "APIToken");
+  dynamic headers = {"Authorization": "Bearer " + apiToken};
+  final response = await http.delete(url + "groups/" + groupid + "/me", headers: headers);
+  print(response.statusCode);
+  print(response.body);
+
 }

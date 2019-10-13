@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:clique/mainMenu.dart';
 import 'package:clique/registerScreens.dart';
 import 'package:flutter/material.dart';
@@ -7,16 +9,17 @@ import 'APIWrapper.dart';
 import 'package:http/http.dart' as http;
 
 final storage = FlutterSecureStorage();
-Group current = Group(
-  id: 1,
-  name: "",
-  description: "",
-  location: Location(latitude: 0, longitude: 0),
-  messages: [],
-  memberTurnover: 0,
-  wannabeMembers: [],
-  members: []
-);
+Group current;
+//Group(
+//  id: 25,
+//  name: "",
+//  description: "",
+//  location: Location(latitude: 0, longitude: 0),
+//  messages: [],
+//  memberTurnover: 0,
+//  wannabeMembers: [],
+//  members: []
+//);
 Group currentGroup;
 String url = 'http://40.114.122.110:8080/';
 bool authenticated = false;
@@ -41,6 +44,8 @@ void main() async {
 //      // send user to register/login screen
 //    }
   }
+
+//  await http.post("http://40.114.122.110:8080//login", body: json.encode({"username": "matthew", "password": "wret"}));
 
   runApp(Clique());
 }
