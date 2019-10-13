@@ -111,14 +111,14 @@ class _CliqueMainMenuState extends State<CliqueMainMenu> with SingleTickerProvid
                                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                           children: <Widget>[
                                             RaisedButton(
-                                              child: Text("Close"),
+                                              child: Text("Close", style: TextStyle(color: Colors.white)),
                                               color: Colors.lightBlueAccent,
                                               onPressed: () {
                                                 Navigator.pop(context);
                                               },
                                             ),
                                             RaisedButton(
-                                              child: Text("Join Group"),
+                                              child: Text("Join Group", style: TextStyle(color: Colors.white)),
                                               color: Colors.lightBlueAccent,
                                               onPressed: () {
                                                 //TODO
@@ -141,7 +141,7 @@ class _CliqueMainMenuState extends State<CliqueMainMenu> with SingleTickerProvid
               }
             }),
         RaisedButton(
-          child: Text("Add new group!"),
+          child: Text("Add new group!", style: TextStyle(color: Colors.white)),
           color: Colors.lightBlueAccent,
           onPressed: () {
             showDialog(
@@ -171,7 +171,7 @@ class _CliqueMainMenuState extends State<CliqueMainMenu> with SingleTickerProvid
                             },
                           ),
                           RaisedButton(
-                            child: Text("Create"),
+                            child: Text("Create", style: TextStyle(color: Colors.white)),
                             color: Colors.lightBlueAccent,
                             onPressed: () {
 //                                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => new CliqueMainMenu()), (_) => false);
@@ -217,14 +217,14 @@ class _CliqueMainMenuState extends State<CliqueMainMenu> with SingleTickerProvid
       });
       return Scaffold(
         appBar: AppBar(
-          title: Text("Clique"),
+          title: Text("Clique", style: TextStyle(color: Colors.white)),
         ),
         body: Center(child: (CircularProgressIndicator())),
       );
     } else {
       return Scaffold(
         appBar: AppBar(
-          title: Text("Clique"),
+          title: Text("Clique", style: TextStyle(color: Colors.white)),
         ),
         body: TabBarView(
             children: <Widget>[groupView(), ChatWindow()],
@@ -234,8 +234,8 @@ class _CliqueMainMenuState extends State<CliqueMainMenu> with SingleTickerProvid
           color: Colors.lightBlueAccent,
           child: TabBar(
             tabs: <Widget>[
-              Tab(icon: Icon(Icons.home)),
-              Tab(icon: Icon(Icons.chat_bubble))
+              Tab(icon: Icon(Icons.home, color: Colors.white)),
+              Tab(icon: Icon(Icons.chat_bubble, color: Colors.white))
             ],
             controller: _controller,
           )
