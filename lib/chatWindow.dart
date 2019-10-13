@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:stomp/stomp.dart';
-import "package:stomp/vm.dart" show connect;
+import 'package:clique/stompLibrary.dart';
+import "package:stomp/stomp.dart";
+import "package:stomp/impl/plugin.dart";
+import 'package:web_socket_channel/io.dart';
+import 'package:web_socket_channel/status.dart' as status;
 
 import 'APIWrapper.dart';
 
@@ -16,46 +19,58 @@ class ChatWindow extends StatefulWidget {
   }
 }
 
-
 class _ChatWindowState extends State<ChatWindow> {
-  Future<List<String>> messages;
+  List<String> messages;
+  List<String> tempMessages = [];
   String message;
+  StompClient client;
 
   @override
   void initState() {
-    connect("foo.server.com").then((StompClient client) {
-      client.subscribeString("messages", "http://40.114.122.110:8080/chat/" + widget.usersCurrentGroup.id.toString(),
-              (Map<String, String> headers, String message) {
-            print("Recieve $message");
+    connect("ws://152.23.250.34:8080/socket").then((StompClient newClient) {
+      print("I got here");
+      newClient.subscribeString("messages", "/chat/" + widget.usersCurrentGroup.id.toString(),
+          (Map<String, String> headers, String message) {
+          if(messages == null) {
+            tempMessages.add(message);
+          }
+          else {
+            messages.add(message);
+          }
           });
-
-      client.sendString("/foo", "Hi, Stomp");
+      client = newClient;
     });
-    messages = getMessages(widget.usersCurrentGroup.id);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+//    if (messages == null) {
+//      getMessages(widget.usersCurrentGroup.id.toString()).then((newMessages){
+//        setState(() {
+//          messages = newMessages;
+//          if (tempMessages != null) {
+//            for (int i = 0; i<tempMessages.length; i++) {
+//              messages.add(tempMessages[i]);
+//            }
+//          }
+//        });
+//      });
+//
+//      return Column(
+//        children: <Widget>[
+//          Center(child: CircularProgressIndicator())
+//        ],
+//      );
+//    }
+
+
     return Column(
       children: <Widget>[
-        FutureBuilder(
-          future: messages,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) {
-              return Center(child: CircularProgressIndicator(),);
-            }
-            else if (snapshot.data == null && snapshot.connectionState == ConnectionState.done) {
-              return Center(child: Text("No messages found! Try sending one!"),);
-            }
-            else {
-              return ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (BuildContext context, int index){
-                  return Text(snapshot.data[index]);
-              },
-              );
-            }
+        ListView.builder(
+          itemCount: messages.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Text(message[index]);
           },
         ),
         Form(

@@ -8,7 +8,16 @@ import 'APIWrapper.dart';
 void main() => runApp(Clique());
 
 final storage = FlutterSecureStorage();
-Group currentGroup;
+Group currentGroup = Group(
+  id: 1,
+  name: "",
+  description: "",
+  location: Location(latitude: 0, longitude: 0),
+  messages: [],
+  memberTurnover: 0,
+  wannabeMembers: [],
+  members: []
+);
 
 
 class Clique extends StatelessWidget {
@@ -22,6 +31,7 @@ class Clique extends StatelessWidget {
       ),
 //      home: CliqueMainMenu(startingIndex: 0,),
     home: CliqueMainMenu(startingIndex: 0),
+//    home: CliqueMainMenu()
     );
   }
 }

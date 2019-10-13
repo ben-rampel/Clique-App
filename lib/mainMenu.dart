@@ -1,3 +1,5 @@
+import 'package:clique/chatWindow.dart';
+import 'package:clique/main.dart';
 import 'package:clique/registerScreens.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -179,7 +181,9 @@ class _CliqueMainMenuState extends State<CliqueMainMenu> with SingleTickerProvid
   Widget build(BuildContext context) {
     if (currentPosition == null) {
       Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((result) {
-        currentPosition = result;
+        setState(() {
+          currentPosition = result;
+        });
       });
       return Scaffold(
         appBar: AppBar(
@@ -193,7 +197,7 @@ class _CliqueMainMenuState extends State<CliqueMainMenu> with SingleTickerProvid
           title: Text("Clique"),
         ),
         body: TabBarView(
-            children: <Widget>[groupView(), CliqueRegisterScreen()],
+            children: <Widget>[groupView(), ChatWindow(usersCurrentGroup: currentGroup,)],
             controller: _controller,
         ),
         bottomNavigationBar: Material(

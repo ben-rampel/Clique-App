@@ -167,9 +167,7 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
   String tempInterest;
   String bio;
   final _formKey = GlobalKey<FormState>();
-
   final TextEditingController _controller = new TextEditingController();
-  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -298,7 +296,7 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
                         }
                         else {
                           storage.write(key: "APIToken", value: responseData[0]);
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CliqueMainMenu()));
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CliqueMainMenu(startingIndex: 0,)));
                         }
                       },
                     )

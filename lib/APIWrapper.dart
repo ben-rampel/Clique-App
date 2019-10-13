@@ -165,8 +165,7 @@ Future<List<Group>> getGroups(double latitude, double longitude) async {
     for (int i = 0; i < decoded.length; i++) {
       groups.add(Group.fromJson(decoded[i]));
     }
-    print(groups);
-    return groups;
+    return groups.length == 0 ? null: groups;
   } else {
     return json.decode(response.body)['error'];
   }
@@ -186,8 +185,8 @@ Future<String> attemptCreateGroup(Group group) async {
 
 Future<List<String>> getMessages(groupID) async {
   String apiToken = await storage.read(key: "APIToken");
-  dynamic headers = {"Authorization": "Bearer " + apiToken, "Content-Type": "application/json"};
-
-  final response = await http.get(url + "/chat/" + groupID + "/messages", headers: headers);
+  dynamic headers = {"Authorization": "Bearer " + apiToken};
+  final response = await http.get(url + "chat/" + groupID + "/messages", headers: headers);
+  print(json.decode(response.body));
   return json.decode(response.body);
 }
