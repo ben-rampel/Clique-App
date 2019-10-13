@@ -168,6 +168,7 @@ Future<List<Group>> getGroups(double latitude, double longitude) async {
     print(groups);
     return groups;
   } else {
+    print("I'm getting here");
     return json.decode(response.body)['error'];
   }
 }

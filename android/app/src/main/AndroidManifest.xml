@@ -10,6 +10,10 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="clique"
         android:icon="@mipmap/ic_launcher">
+
+        <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyBpojw1Y5o4sihkq_Ba_Ccd2-CAfMSR-l8"/>
+        <!--<meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>-->
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -21,6 +25,8 @@
                  until Flutter renders its first frame. It can be removed if
                  there is no splash screen (such as the default splash screen
                  defined in @style/LaunchTheme). -->
+            <!--<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>-->
+            <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>-->
             <meta-data
                 android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
                 android:value="true" />
@@ -29,5 +35,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <!--<activity android:name="com.apptreesoftware.mapview.MapActivity" android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>-->
     </application>
 </manifest>

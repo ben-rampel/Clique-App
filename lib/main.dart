@@ -45,7 +45,7 @@ class Clique extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.lightBlue,
       ),
-//      home: CliqueMainMenu(startingIndex: 0,),
+//      home: CliqueRegisterScreen(),
       home: (authenticated) ? CliqueMainMenu(startingIndex: 0) : CliqueRegisterScreen(),
     );
 
