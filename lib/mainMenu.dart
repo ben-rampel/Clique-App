@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
 import 'APIWrapper.dart';
+import 'chatWindow.dart';
 
 class CliqueMainMenu extends StatefulWidget {
   final int startingIndex;
@@ -33,6 +34,11 @@ class _CliqueMainMenuState extends State<CliqueMainMenu> with SingleTickerProvid
     super.dispose();
   }
 
+  Future<void> _refreshGroupList() async {
+    setState(() {
+      getGroups(currentPosition.latitude, currentPosition.longitude);
+    });
+  }
 
   Widget groupView() {
     return Column(
@@ -46,72 +52,97 @@ class _CliqueMainMenuState extends State<CliqueMainMenu> with SingleTickerProvid
                 );
               } else if (snapshot.connectionState == ConnectionState.done && snapshot.data == null) {
                 return Center(
-                    child: Text("It doesn't look like there's any groups in your area! Try starting one!"));
+                  child: Padding(
+                    padding: new EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                    child: TextFormField(
+                      enabled: false,
+
+                      decoration: InputDecoration(
+                        hintText: "It doesn't look like there are any groups in your area! Try starting your own!",
+                        fillColor: Colors.black,
+                      ),
+
+                      style: new TextStyle(
+                        fontSize: 15.0,
+                        color: Colors.black,
+                      ),
+
+                      maxLines: 2,
+                    ),
+                  ),
+                );
               } else {
                 return ListView.builder(
                     shrinkWrap: true,
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return Card(child: ListTile(
-                          onTap: () {
-                            showDialog(context: context, builder: (BuildContext context) {
-                              return AlertDialog(
-                                content: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Row(
+                      return Card(
+                          child: RefreshIndicator(
+                            child: ListTile(
+                              onTap: () {
+                                showDialog(context: context, builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: <Widget>[
-                                        Text("Group Name: "),
-                                        Text(snapshot.data[index].name)
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text("Group Description: "),
-                                        Text(snapshot.data[index].description)
-                                      ],
-                                    ),
-//                                          Row(
-//                                            mainAxisAlignment: MainAxisAlignment.center,
-//                                            children: <Widget>[
-//                                              Text("Main Interests: "),
-//                                              Text(snapshot.data[index].mainInterests)
-//                                            ],
-//                                          )
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: <Widget>[
-                                        RaisedButton(
-                                          child: Text("Close"),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Text("Group Name: "),
+                                            Text(snapshot.data[index].name)
+                                          ],
                                         ),
-                                        RaisedButton(
-                                          child: Text("Join Group"),
-                                          onPressed: () {
-                                            //TODO
-                                          },
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Text("Group Description: "),
+                                            Text(snapshot.data[index].description)
+                                          ],
+                                        ),
+    //                                          Row(
+    //                                            mainAxisAlignment: MainAxisAlignment.center,
+    //                                            children: <Widget>[
+    //                                              Text("Main Interests: "),
+    //                                              Text(snapshot.data[index].mainInterests)
+    //                                            ],
+    //                                          )
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          children: <Widget>[
+                                            RaisedButton(
+                                              child: Text("Close"),
+                                              color: Colors.lightBlueAccent,
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                            RaisedButton(
+                                              child: Text("Join Group"),
+                                              color: Colors.lightBlueAccent,
+                                              onPressed: () {
+                                                //TODO
+                                              },
+                                            )
+                                          ],
                                         )
                                       ],
-                                    )
-                                  ],
-                                ),
-                              );
-                            });
-                          },
-                          title: Text(snapshot.data[index].name
-                          )
-                      )
+                                    ),
+                                  );
+                                });
+                              },
+                            title: Text(snapshot.data[index].name
+                            )
+                        ),
+                            onRefresh: _refreshGroupList,
+                          ),
                       );
                     });
               }
             }),
         RaisedButton(
           child: Text("Add new group!"),
+          color: Colors.lightBlueAccent,
           onPressed: () {
             showDialog(
                 context: context,
@@ -141,6 +172,7 @@ class _CliqueMainMenuState extends State<CliqueMainMenu> with SingleTickerProvid
                           ),
                           RaisedButton(
                             child: Text("Create"),
+                            color: Colors.lightBlueAccent,
                             onPressed: () {
 //                                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => new CliqueMainMenu()), (_) => false);
                               _formKey.currentState.validate();
@@ -179,7 +211,9 @@ class _CliqueMainMenuState extends State<CliqueMainMenu> with SingleTickerProvid
   Widget build(BuildContext context) {
     if (currentPosition == null) {
       Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((result) {
-        currentPosition = result;
+        setState(() {
+          currentPosition = result;
+        });
       });
       return Scaffold(
         appBar: AppBar(
@@ -193,7 +227,7 @@ class _CliqueMainMenuState extends State<CliqueMainMenu> with SingleTickerProvid
           title: Text("Clique"),
         ),
         body: TabBarView(
-            children: <Widget>[groupView(), CliqueRegisterScreen()],
+            children: <Widget>[groupView(), ChatWindow()],
             controller: _controller,
         ),
         bottomNavigationBar: Material(
